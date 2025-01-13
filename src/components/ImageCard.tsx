@@ -15,6 +15,7 @@ const ImageCard: FC<ImageFile> = ({ name, src }) => {
         src={src}
         alt={name}
         sx={{ aspectRatio: 1, objectFit: 'contain', objectPosition: 'bottom' }}
+        draggable={false}
       />
       <Typography
         variant="h6"
