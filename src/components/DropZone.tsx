@@ -5,9 +5,9 @@ import { Column } from './common/Flex';
 
 export interface DropZoneProps extends BoxProps {
   accept?: string; // Acceptable file types, e.g., 'image/*', 'application/pdf', etc.
-  onDrop: DragEventSource['onDrop'];
-  onDragEnter: DragEventSource['onDragEnter'];
-  onDragLeave: DragEventSource['onDragLeave'];
+  onDrop?: DragEventSource['onDrop'];
+  onDragEnter?: DragEventSource['onDragEnter'];
+  onDragLeave?: DragEventSource['onDragLeave'];
   onChange?: (ev: ChangeEvent<HTMLInputElement>) => any;
 }
 
