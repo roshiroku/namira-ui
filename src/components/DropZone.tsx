@@ -1,13 +1,13 @@
-import { forwardRef, useCallback, DragEvent, ChangeEvent } from 'react';
+import { forwardRef, useCallback, ChangeEvent } from 'react';
 import { Box, Typography, Button, BoxProps } from '@mui/material';
 import useDropZone from '../hooks/useDropZone';
 import { Column } from './common/Flex';
 
 export interface DropZoneProps extends BoxProps {
   accept?: string; // Acceptable file types, e.g., 'image/*', 'application/pdf', etc.
-  onDrop?: (ev: DragEvent) => any;
-  onDragEnter?: (ev: DragEvent) => any;
-  onDragLeave?: (ev: DragEvent) => any;
+  onDrop: DragEventSource['onDrop'];
+  onDragEnter: DragEventSource['onDragEnter'];
+  onDragLeave: DragEventSource['onDragLeave'];
   onChange?: (ev: ChangeEvent<HTMLInputElement>) => any;
 }
 

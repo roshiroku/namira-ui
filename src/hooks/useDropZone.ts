@@ -1,12 +1,9 @@
 import { useCallback, useMemo, useRef, useState, DragEvent, useEffect } from 'react';
 
 const useDropZone = ({ element: el, accept = '*', onDrop, onDragEnter, onDragLeave }: {
-  element?: Window | HTMLElement,
+  element?: Window | HTMLElement;
   accept?: string;
-  onDrop?: (ev: DragEvent) => any;
-  onDragEnter?: (ev: DragEvent) => any;
-  onDragLeave?: (ev: DragEvent) => any;
-} = {}) => {
+} & DragEventSource = {}) => {
   const [files, setFiles] = useState<File[]>([]);
   const [isDragging, setIsDragging] = useState(false);
 
