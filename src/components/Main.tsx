@@ -10,7 +10,7 @@ const Main = () => {
 
   const { images, setImages } = useImages();
 
-  const { isDragging } = useDropZone({ element: window });
+  const { isDragging } = useDropZone({ element: window, accept: 'image/*' });
 
   const showDropZone = useMemo(() => !images.length || isDragging, [images, isDragging]);
 
@@ -48,6 +48,7 @@ const Main = () => {
         ))}
       </Grid>
       <DropZone
+        accept="image/*"
         onDrop={(ev) => setFiles(Array.from(ev.dataTransfer.files || []))}
         onChange={images.length ? undefined : (ev) => setFiles(Array.from(ev.target.files || []))}
         sx={{
