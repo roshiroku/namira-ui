@@ -1,19 +1,47 @@
-import { useState, useRef } from 'react';
+import { FC, useState, useRef } from 'react';
 import { AppBar, Toolbar, Typography, Button, Menu, MenuItem, IconButton, Divider, Box } from '@mui/material';
 import SettingsIcon from '@mui/icons-material/Settings';
+import useImageConverter from '../hooks/useImageConverter';
+import useDownload from '../hooks/useDownload';
+import { useImages } from '../providers/ImageProvider';
+import { ImageFormat } from '../enums/ImageFormat';
 
-const Header: React.FC = () => {
+const Header: FC = () => {
   const saveButtonRef = useRef<HTMLButtonElement>(null);
   const settingsButtonRef = useRef<HTMLButtonElement>(null);
+  const clearButtonRef = useRef<HTMLButtonElement>(null);
+
   const [saveMenuOpen, setSaveMenuOpen] = useState(false);
   const [settingsMenuOpen, setSettingsMenuOpen] = useState(false);
 
+  const { images, setImages } = useImages();
+
+  const convertImages = useImageConverter();
+  const { zip } = useDownload();
+
+  const handleSaveAs = async (format: ImageFormat) => {
+    if (images.length === 0) {
+      alert("No images to convert.");
+      return;
+    }
+
+    try {
+      const convertedImages = await convertImages(images, { format });
+      console.log("Converted Images:", convertedImages);
+
+      // Use the download hook to download images
+      zip(convertedImages.map(({ name, src }) => ({ name, url: src })));
+    } catch (error) {
+      console.error("Error converting images:", error);
+    }
+  };
+
   return (
     <Box sx={{ height: 72 }}>
-      <AppBar color="inherit" elevation={0} sx={{ height: 'inherit' }}>
-        <Toolbar sx={{ height: 'inherit' }}>
+      <AppBar color="inherit" sx={{ height: 'inherit' }}>
+        <Toolbar sx={{ height: 'inherit', gap: 2 }}>
           <Typography variant="h6" sx={{ flexGrow: 1 }}>
-            NAMIR
+            NAMIRA
           </Typography>
           <Button ref={saveButtonRef} variant="contained" onClick={() => setSaveMenuOpen(true)}>
             Save As
@@ -23,11 +51,18 @@ const Header: React.FC = () => {
             open={saveMenuOpen}
             onClose={() => setSaveMenuOpen(false)}
           >
-            <MenuItem onClick={() => setSaveMenuOpen(false)}>JPEG</MenuItem>
-            <MenuItem onClick={() => setSaveMenuOpen(false)}>PNG</MenuItem>
-            <MenuItem onClick={() => setSaveMenuOpen(false)}>SVG</MenuItem>
-            <MenuItem onClick={() => setSaveMenuOpen(false)}>GIF</MenuItem>
+            {Object.entries(ImageFormat).map(([label, value]) => (
+              <MenuItem key={value} onClick={() => {
+                setSaveMenuOpen(false);
+                handleSaveAs(value);
+              }}>
+                Save As {label}
+              </MenuItem>
+            ))}
           </Menu>
+          <Button ref={clearButtonRef} variant="outlined" onClick={() => setImages([])}>
+            Clear
+          </Button>
           <IconButton ref={settingsButtonRef} color="inherit" onClick={() => setSettingsMenuOpen(true)}>
             <SettingsIcon />
           </IconButton>
