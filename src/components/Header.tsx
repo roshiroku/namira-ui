@@ -1,10 +1,11 @@
 import { FC, useState, useRef } from 'react';
-import { AppBar, Toolbar, Typography, Button, Menu, MenuItem, IconButton, Divider, Box } from '@mui/material';
+import { AppBar, Toolbar, Typography, Button, Menu, IconButton, Divider, Box, MenuItem } from '@mui/material';
 import SettingsIcon from '@mui/icons-material/Settings';
 import useImageConverter from '../hooks/useImageConverter';
 import useDownload from '../hooks/useDownload';
 import { useImages } from '../providers/ImageProvider';
 import { ImageFormat } from '../enums/ImageFormat';
+import SettingsMenu from './SettingsMenu';
 
 const Header: FC = () => {
   const saveButtonRef = useRef<HTMLButtonElement>(null);
@@ -75,16 +76,7 @@ const Header: FC = () => {
           <IconButton ref={settingsButtonRef} color="inherit" onClick={() => setSettingsMenuOpen(true)}>
             <SettingsIcon />
           </IconButton>
-          <Menu
-            anchorEl={settingsButtonRef.current}
-            open={settingsMenuOpen}
-            onClose={() => setSettingsMenuOpen(false)}
-          >
-            <MenuItem onClick={() => setSettingsMenuOpen(false)}>Zip Files</MenuItem>
-            <MenuItem onClick={() => setSettingsMenuOpen(false)}>Prefix Filenames</MenuItem>
-            <MenuItem onClick={() => setSettingsMenuOpen(false)}>Option 3</MenuItem>
-            <MenuItem onClick={() => setSettingsMenuOpen(false)}>Option 4</MenuItem>
-          </Menu>
+          <SettingsMenu open={settingsMenuOpen} onClose={() => setSettingsMenuOpen(false)} />
         </Toolbar>
         <Divider />
       </AppBar>

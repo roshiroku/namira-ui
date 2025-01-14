@@ -1,3 +1,7 @@
+type ThemeMode = 'system' | 'light' | 'dark';
+
+type Settings = { theme: ThemeMode; zipDownload: boolean; quality: number; };
+
 type DragEventSource = {
   onDrop?: (ev: React.DragEvent) => any;
   onDragEnter?: (ev: React.DragEvent) => any;
