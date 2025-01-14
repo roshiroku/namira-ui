@@ -1,9 +1,11 @@
 import { createContext, Dispatch, FC, PropsWithChildren, SetStateAction, useContext, useMemo, useState } from 'react';
 
-const ImageContext = createContext<{
+interface ImageContextProps {
   images: ImageFile[];
   setImages: Dispatch<SetStateAction<ImageFile[]>>;
-}>({ images: [], setImages: () => { } });
+}
+
+const ImageContext = createContext<ImageContextProps>({ images: [], setImages: () => { } });
 
 const useImages = () => useContext(ImageContext);
 

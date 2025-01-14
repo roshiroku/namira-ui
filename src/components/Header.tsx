@@ -1,10 +1,10 @@
 import { FC, useState, useRef } from 'react';
 import { AppBar, Toolbar, Typography, Button, Menu, IconButton, Divider, Box, MenuItem } from '@mui/material';
 import SettingsIcon from '@mui/icons-material/Settings';
+import { ImageFormat } from '../enums/ImageFormat';
 import useImageConverter from '../hooks/useImageConverter';
 import useDownload from '../hooks/useDownload';
 import { useImages } from '../providers/ImageProvider';
-import { ImageFormat } from '../enums/ImageFormat';
 import SettingsMenu from './SettingsMenu';
 
 const Header: FC = () => {
@@ -22,7 +22,7 @@ const Header: FC = () => {
 
   const handleSaveAs = async (format: ImageFormat) => {
     if (images.length === 0) {
-      alert("No images to convert.");
+      alert('No images to convert.');
       return;
     }
 
@@ -37,12 +37,12 @@ const Header: FC = () => {
         convertedImages.push(convertedImage);
       }
 
-      console.log("Converted Images:", convertedImages);
+      console.log('Converted Images:', convertedImages);
 
       // Use the download hook to download images
       zip(convertedImages.map(({ name, src }) => ({ name, url: src })));
     } catch (error) {
-      console.error("Error converting images:", error);
+      console.error('Error converting images:', error);
     }
   };
 

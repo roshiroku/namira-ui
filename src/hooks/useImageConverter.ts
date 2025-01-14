@@ -1,5 +1,5 @@
-import { ImageFormat } from '../enums/ImageFormat';
 import { canvas, compareImages, ctx, getImageData, getImageName } from '../utils/image.utils';
+import { ImageFormat } from '../enums/ImageFormat';
 
 interface ConversionOptions {
   format?: ImageFormat;
