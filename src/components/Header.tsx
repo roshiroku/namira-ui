@@ -16,7 +16,7 @@ const Header: FC = () => {
 
   const { images, setImages } = useImages();
 
-  const convertImages = useImageConverter();
+  const { convertImages, detectQuality } = useImageConverter();
   const { zip } = useDownload();
 
   const handleSaveAs = async (format: ImageFormat) => {
@@ -26,7 +26,16 @@ const Header: FC = () => {
     }
 
     try {
-      const convertedImages = await convertImages(images, { format });
+      const convertedImages: ImageFile[] = [];
+
+      for (const image of images) {
+        console.log('finding min quality for image ' + image.name);
+        const quality = await detectQuality(image, format);
+        console.log('min quality set to ' + quality);
+        const [convertedImage] = await convertImages([image], { format, quality });
+        convertedImages.push(convertedImage);
+      }
+
       console.log("Converted Images:", convertedImages);
 
       // Use the download hook to download images

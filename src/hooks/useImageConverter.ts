@@ -1,37 +1,18 @@
-import { useMemo } from 'react';
 import { ImageFormat } from '../enums/ImageFormat';
+import { canvas, compareImages, ctx, getImageData, getImageName } from '../utils/image.utils';
 
 interface ConversionOptions {
   format?: ImageFormat;
   quality?: number; // Quality (0.0 to 1.0) for image/jpeg and image/webp
 }
 
+interface QualityConfig {
+  maxDifference?: number;
+  step?: number;
+  initialQuality?: number;
+}
+
 const useImageConverter = () => {
-  const { canvas, ctx } = useMemo(() => {
-    const canvas = document.createElement('canvas');
-    const ctx = canvas.getContext('2d');
-
-    if (!ctx) {
-      throw new Error('Failed to get canvas context.');
-    }
-
-    return { canvas, ctx };
-  }, []);
-
-  const getImageName = (image: ImageInput, format?: ImageFormat): string => {
-    let name = 'converted-image';
-
-    if (typeof image === 'string') {
-      const segments = image.split('/');
-      name = segments.pop()?.split('.').slice(0, -1).join('.') || 'converted-image';
-    } else if (image instanceof File || 'name' in image) {
-      name = image.name.split('.').slice(0, -1).join('.') || 'converted-image';
-    }
-
-    const ext = format?.split('/')[1] || 'png';
-    return `${name}.${ext}`;
-  };
-
   const convertImage = (image: ImageInput, options: ConversionOptions): Promise<ImageFile> => {
     return new Promise((resolve, reject) => {
       const img = new Image();
@@ -81,7 +62,32 @@ const useImageConverter = () => {
     return Promise.all(images.map((image) => convertImage(image, options)));
   };
 
-  return convertImages;
+  const detectQuality = async (
+    image: ImageFile,
+    format: ImageFormat,
+    config: QualityConfig = {}
+  ): Promise<number> => {
+    const { maxDifference = 0.005, step = 0.01, initialQuality = 1 } = config;
+    const imageData = await getImageData(image.src);
+    let quality = initialQuality;
+    let minQuality = initialQuality;
+
+    while (quality >= 0) {
+      const convertedImage = await convertImage(image, { format, quality });
+      const difference = await compareImages(imageData, convertedImage.src);
+
+      if (difference <= maxDifference) {
+        minQuality = quality;
+        quality = Math.round((quality - step) * 10_000) / 10_000; // Continue to check lower qualities
+      } else {
+        break; // Exit if difference exceeds maxDifference
+      }
+    }
+
+    return minQuality;
+  };
+
+  return { convertImages, detectQuality };
 };
 
 export default useImageConverter;
