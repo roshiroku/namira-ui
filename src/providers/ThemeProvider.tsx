@@ -1,29 +1,56 @@
-import { FC, PropsWithChildren } from 'react';
-import { createTheme, ThemeProvider as MuiThemeProvider } from '@mui/material';
+import { FC, PropsWithChildren, useMemo } from 'react';
+import { createTheme, darken, emphasize, ThemeProvider as MuiThemeProvider } from '@mui/material';
 import '@fontsource-variable/inter/index.css';
+import { useSettings } from './SettingsProvider';
+import { blue } from '@mui/material/colors';
 
 const ThemeProvider: FC<PropsWithChildren> = ({ children }) => {
-  const theme = createTheme({
-    palette: { mode: 'light' },
-    typography: {
-      fontFamily: "'Inter Variable', sans-serif",
-      h6: { lineHeight: 1.5 }
-    },
-    components: {
-      MuiAppBar: {
-        defaultProps: { elevation: 0 }
-      },
-      MuiButton: {
-        defaultProps: { disableElevation: true }
-      }
+  const { settings } = useSettings();
+
+  const theme = useMemo(() => {
+    let mode: 'light' | 'dark' = 'light';
+
+    if (settings.theme === 'system') {
+      const prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      mode = prefersDarkMode ? 'dark' : 'light';
+    } else {
+      mode = settings.theme;
     }
-  });
+
+    return createTheme({
+      palette: {
+        mode,
+        primary: {
+          main: mode === 'dark' ? blue[400] : blue[600],
+          light: blue[200],
+          lighter: blue[100],
+          lightest: blue[50],
+          dark: blue[800],
+          darker: blue[900],
+          darkest: darken(emphasize(blue[900], 0.125), 0.75),
+          ...blue
+        } as any
+      },
+      typography: {
+        fontFamily: "'Inter Variable', sans-serif",
+        h6: { lineHeight: 1.5 }
+      },
+      components: {
+        MuiAppBar: {
+          defaultProps: { elevation: 0 }
+        },
+        MuiButton: {
+          defaultProps: { disableElevation: true }
+        }
+      }
+    });
+  }, [settings.theme]);
 
   return (
     <MuiThemeProvider theme={theme}>
       {children}
     </MuiThemeProvider>
-  )
+  );
 };
 
 export default ThemeProvider;

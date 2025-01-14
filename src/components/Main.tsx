@@ -1,11 +1,13 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { Grid2 as Grid } from '@mui/material';
+import { Grid2 as Grid, useTheme } from '@mui/material';
 import useDropZone from '../hooks/useDropZone';
 import { useImages } from '../providers/ImageProvider';
 import DropZone from './DropZone';
 import ImageCard from './ImageCard';
 
 const Main = () => {
+  const theme = useTheme();
+
   const [files, setFiles] = useState<File[]>([]);
 
   const { images, setImages } = useImages();
@@ -55,7 +57,7 @@ const Main = () => {
           position: 'fixed',
           inset: 0,
           visibility: showDropZone ? '' : 'hidden',
-          zIndex: 1100
+          zIndex: theme.zIndex.appBar + 1
         }}
       />
     </>

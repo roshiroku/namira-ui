@@ -1,5 +1,5 @@
 import { forwardRef, useCallback, ChangeEvent } from 'react';
-import { Box, Typography, Button, BoxProps } from '@mui/material';
+import { Box, Typography, Button, BoxProps, useTheme } from '@mui/material';
 import useDropZone from '../hooks/useDropZone';
 import { Column } from './common/Flex';
 
@@ -20,6 +20,8 @@ const DropZone = forwardRef<typeof Box, DropZoneProps>(({
   sx,
   ...props
 }, ref) => {
+  const theme = useTheme();
+
   const {
     isDragging,
     filterFiles,
@@ -48,13 +50,13 @@ const DropZone = forwardRef<typeof Box, DropZoneProps>(({
         gap: 2,
         justifyContent: 'center',
         alignItems: 'center',
-        border: isDragging ? '2px dashed #007bff' : '2px dashed #ccc',
-        borderRadius: '8px',
-        padding: '20px',
         textAlign: 'center',
-        backgroundColor: isDragging ? '#f0f8ff' : '#f9f9f9',
+        p: 4,
+        border: '2px dashed',
+        borderColor: isDragging ? `primary.main` : `action.disabled`,
+        backgroundColor: isDragging ? `primary.${theme.palette.mode}est` : 'background.default',
         transition: 'background-color 0.2s, border-color 0.2s',
-        ...sx,
+        ...sx
       }}
       {...props}
     >
