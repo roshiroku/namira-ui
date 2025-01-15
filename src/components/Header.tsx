@@ -1,9 +1,7 @@
 import { FC, useState, useRef } from 'react';
-import { AppBar, Toolbar, Typography, Button, Menu, IconButton, Divider, Box, MenuItem } from '@mui/material';
+import { AppBar, Toolbar, Typography, Button, Menu, Divider, Box, MenuItem } from '@mui/material';
 import SettingsIcon from '@mui/icons-material/Settings';
 import { ImageFormat } from '../enums/ImageFormat';
-import useImageConverter from '../hooks/useImageConverter';
-import useDownload from '../hooks/useDownload';
 import { useImages } from '../providers/ImageProvider';
 import SettingsMenu from './SettingsMenu';
 
@@ -15,36 +13,7 @@ const Header: FC = () => {
   const [saveMenuOpen, setSaveMenuOpen] = useState(false);
   const [settingsMenuOpen, setSettingsMenuOpen] = useState(false);
 
-  const { images, setImages } = useImages();
-
-  const { convertImages, detectQuality } = useImageConverter();
-  const { zip } = useDownload();
-
-  const handleSaveAs = async (format: ImageFormat) => {
-    if (images.length === 0) {
-      alert('No images to convert.');
-      return;
-    }
-
-    try {
-      const convertedImages: ImageFile[] = [];
-
-      for (const image of images) {
-        console.log('finding min quality for image ' + image.name);
-        const quality = await detectQuality(image, format);
-        console.log('min quality set to ' + quality);
-        const [convertedImage] = await convertImages([image], { format, quality });
-        convertedImages.push(convertedImage);
-      }
-
-      console.log('Converted Images:', convertedImages);
-
-      // Use the download hook to download images
-      zip(convertedImages.map(({ name, src }) => ({ name, url: src })));
-    } catch (error) {
-      console.error('Error converting images:', error);
-    }
-  };
+  const { setImages, saveImages } = useImages();
 
   return (
     <Box sx={{ height: 72 }}>
@@ -64,7 +33,7 @@ const Header: FC = () => {
             {Object.entries(ImageFormat).map(([label, value]) => (
               <MenuItem key={value} onClick={() => {
                 setSaveMenuOpen(false);
-                handleSaveAs(value);
+                saveImages(value);
               }}>
                 Save As {label}
               </MenuItem>
@@ -73,9 +42,9 @@ const Header: FC = () => {
           <Button ref={clearButtonRef} variant="outlined" onClick={() => setImages([])}>
             Clear
           </Button>
-          <IconButton ref={settingsButtonRef} color="inherit" onClick={() => setSettingsMenuOpen(true)}>
+          <Button ref={settingsButtonRef} color="inherit" onClick={() => setSettingsMenuOpen(true)} sx={{ minWidth: 0 }}>
             <SettingsIcon />
-          </IconButton>
+          </Button>
           <SettingsMenu open={settingsMenuOpen} onClose={() => setSettingsMenuOpen(false)} />
         </Toolbar>
         <Divider />
