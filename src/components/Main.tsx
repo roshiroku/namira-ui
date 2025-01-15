@@ -44,7 +44,7 @@ const Main = () => {
     <>
       <Grid container spacing={2} sx={{ p: 3 }}>
         {images.map((image, i) => (
-          <Grid size={{ xs: 6, sm: 4, lg: 3 }} key={i}>
+          <Grid size={{ xs: 6, sm: 4, md: 3, lg: 2 }} key={i}>
             <ImageCard {...image} />
           </Grid>
         ))}
