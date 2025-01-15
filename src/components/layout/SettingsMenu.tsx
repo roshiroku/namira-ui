@@ -1,5 +1,5 @@
 import { ChangeEvent, FC } from 'react';
-import { Dialog, DialogTitle, DialogContent, FormControlLabel, Checkbox, TextField, Switch, DialogProps, useTheme, Tooltip } from '@mui/material';
+import { Dialog, DialogTitle, DialogContent, Checkbox, TextField, Switch, DialogProps, useTheme, Tooltip } from '@mui/material';
 import InfoIcon from '@mui/icons-material/InfoOutlined';
 import { useSettings } from '../../providers/SettingsProvider';
 import { Column, Row } from '../common/Flex';
@@ -30,43 +30,33 @@ const SettingsMenu: FC<DialogProps> = ({ open, onClose }) => {
       <DialogTitle>Settings</DialogTitle>
       <DialogContent>
         <Column sx={{ gap: 1 }}>
-          <FormControlLabel
-            control={
-              <Checkbox
-                checked={settings.zipDownload}
-                onChange={handleZipDownloadChange}
-              />
-            }
-            label={
+          <Row sx={{ justifyContent: 'space-between', alignItems: 'center', mr: -1.333 }}>
+            <label htmlFor="zipDownloadCheckbox" style={{ display: 'flex', alignItems: 'center', gap: 4, cursor: 'pointer' }}>
+              Download Zip
               <Tooltip title="Enable this to download converted images as a single ZIP file">
-                <Row component="span" sx={{ alignItems: 'center', gap: 0.5 }}>
-                  Download Zip
-                  <InfoIcon fontSize="small" color="action" />
-                </Row>
+                <InfoIcon fontSize="small" color="action" />
               </Tooltip>
-            }
-            labelPlacement="start"
-            sx={{ justifyContent: 'space-between', ml: 0 }}
-          />
+            </label>
+            <Checkbox
+              id="zipDownloadCheckbox"
+              checked={settings.zipDownload}
+              onChange={handleZipDownloadChange}
+            />
+          </Row>
 
-          <FormControlLabel
-            control={
-              <Checkbox
-                checked={settings.quality === -1}
-                onChange={handleAutoOptimizeChange}
-              />
-            }
-            label={
+          <Row sx={{ justifyContent: 'space-between', alignItems: 'center', mr: -1.333 }}>
+            <label htmlFor="autoOptimizeCheckbox" style={{ display: 'flex', alignItems: 'center', gap: 4, cursor: 'pointer' }}>
+              Detect Quality
               <Tooltip title="Automatically detect the best quality to minimize file size">
-                <Row component="span" sx={{ alignItems: 'center', gap: 0.5 }}>
-                  Detect Quality
-                  <InfoIcon fontSize="small" color="action" />
-                </Row>
+                <InfoIcon fontSize="small" color="action" />
               </Tooltip>
-            }
-            labelPlacement="start"
-            sx={{ justifyContent: 'space-between', ml: 0 }}
-          />
+            </label>
+            <Checkbox
+              id="autoOptimizeCheckbox"
+              checked={settings.quality === -1}
+              onChange={handleAutoOptimizeChange}
+            />
+          </Row>
 
           {settings.quality !== -1 && (
             <TextField
@@ -79,17 +69,16 @@ const SettingsMenu: FC<DialogProps> = ({ open, onClose }) => {
             />
           )}
 
-          <FormControlLabel
-            control={
-              <Switch
-                checked={theme.palette.mode === 'dark'}
-                onChange={handleThemeChange}
-              />
-            }
-            label="Dark Mode"
-            labelPlacement="start"
-            sx={{ justifyContent: 'space-between', ml: 0 }}
-          />
+          <Row sx={{ justifyContent: 'space-between', alignItems: 'center', mr: -1.5 }}>
+            <label htmlFor="darkModeSwitch" style={{ cursor: 'pointer' }}>
+              Dark Mode
+            </label>
+            <Switch
+              id="darkModeSwitch"
+              checked={theme.palette.mode === 'dark'}
+              onChange={handleThemeChange}
+            />
+          </Row>
         </Column>
       </DialogContent>
     </Dialog>
