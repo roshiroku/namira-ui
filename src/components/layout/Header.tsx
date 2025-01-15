@@ -1,8 +1,8 @@
 import { FC, useState, useRef } from 'react';
 import { AppBar, Toolbar, Typography, Button, Menu, Divider, Box, MenuItem } from '@mui/material';
 import SettingsIcon from '@mui/icons-material/Settings';
-import { ImageFormat } from '../enums/ImageFormat';
-import { useImages } from '../providers/ImageProvider';
+import { ImageFormat } from '../../enums/ImageFormat';
+import { useImages } from '../../providers/ImageProvider';
 import SettingsMenu from './SettingsMenu';
 
 const Header: FC = () => {

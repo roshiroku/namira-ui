@@ -1,8 +1,8 @@
 import { ChangeEvent, FC } from 'react';
 import { Dialog, DialogTitle, DialogContent, FormControlLabel, Checkbox, TextField, Switch, DialogProps, useTheme, Tooltip } from '@mui/material';
 import InfoIcon from '@mui/icons-material/InfoOutlined';
-import { useSettings } from '../providers/SettingsProvider';
-import { Column, Row } from './common/Flex';
+import { useSettings } from '../../providers/SettingsProvider';
+import { Column, Row } from '../common/Flex';
 
 const SettingsMenu: FC<DialogProps> = ({ open, onClose }) => {
   const { settings, setSettings } = useSettings();

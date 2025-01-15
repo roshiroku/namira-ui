@@ -4,8 +4,9 @@ import SettingsProvider from './providers/SettingsProvider';
 import ThemeProvider from './providers/ThemeProvider';
 import ImageProvider from './providers/ImageProvider';
 import { Column } from './components/common/Flex';
-import Header from './components/Header';
-import Main from './components/Main';
+import Header from './components/layout/Header';
+import ImageGrid from './components/ImageGrid';
+import ImageUpload from './components/ImageUpload';
 
 const App: FC = () => {
   return (
@@ -16,7 +17,8 @@ const App: FC = () => {
           <Column sx={{ minHeight: '100vh' }}>
             <Header />
             <Box sx={{ flexGrow: 1 }}>
-              <Main />
+              <ImageGrid />
+              <ImageUpload />
             </Box>
           </Column>
         </ImageProvider>
