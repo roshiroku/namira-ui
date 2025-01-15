@@ -6,7 +6,7 @@ const ImageGrid = () => {
   const { images } = useImages();
 
   return (
-    <Grid container spacing={2} sx={{ p: 3 }}>
+    <Grid container spacing={2} sx={{ p: { xs: 2, sm: 3 } }}>
       {images.map((image, i) => (
         <Grid size={{ xs: 6, sm: 4, md: 3, lg: 2 }} key={i}>
           <ImageCard {...image} />
