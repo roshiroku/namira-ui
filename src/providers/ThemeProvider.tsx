@@ -21,13 +21,13 @@ const ThemeProvider: FC<PropsWithChildren> = ({ children }) => {
       palette: {
         mode,
         primary: {
-          main: mode === 'dark' ? blue[400] : blue[600],
+          main: mode === 'dark' ? blue[300] : blue[600],
           light: blue[200],
           lighter: blue[100],
           lightest: blue[50],
-          dark: blue[800],
-          darker: blue[900],
-          darkest: darken(emphasize(blue[900], 0.125), 0.75),
+          dark: blue[700],
+          darker: blue[800],
+          darkest: darken(emphasize(blue[900], 0.5), 0.875),
           ...blue
         } as any
       },
