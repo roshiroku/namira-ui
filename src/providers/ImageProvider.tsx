@@ -1,10 +1,11 @@
 import { createContext, Dispatch, FC, PropsWithChildren, SetStateAction, useCallback, useContext, useMemo, useState } from 'react';
-import { Dialog, DialogContent, DialogTitle, Typography, LinearProgress, Box } from '@mui/material';
+import { Dialog, DialogContent, DialogTitle, Typography, LinearProgress } from '@mui/material';
 import { ImageFormat } from '../enums/ImageFormat';
 import useDownload from '../hooks/useDownload';
 import { useSettings } from './SettingsProvider';
 import { compareImages, getImageData } from '../utils/image.utils';
 import { convertImage } from '../utils/convert.utils';
+import { Column } from '../components/common/Flex';
 
 interface QualityConfig {
   maxDifference?: number;
@@ -100,10 +101,10 @@ const ImageProvider: FC<PropsWithChildren> = ({ children }) => {
       <Dialog open={progressDialog.open} maxWidth="sm" fullWidth>
         <DialogTitle>Processing Images</DialogTitle>
         <DialogContent>
-          <Box display="flex" flexDirection="column" gap={2}>
+          <Column gap={2}>
             <Typography>{progressDialog.message}</Typography>
             <LinearProgress variant="determinate" value={progressDialog.progress} sx={{ width: '100%' }} />
-          </Box>
+          </Column>
         </DialogContent>
       </Dialog>
     </ImageContext.Provider>

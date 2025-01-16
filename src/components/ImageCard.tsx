@@ -19,9 +19,8 @@ const ImageCard: FC<ImageFile> = ({ name, src }) => {
       />
       <Typography
         variant="h6"
-        component="div"
         noWrap
-        sx={{ p: 1, textAlign: 'center', whiteSpace: 'wrap' }}
+        sx={{ p: 1, textAlign: 'center', fontWeight: 400, whiteSpace: 'wrap' }}
       >
         {truncateName}
       </Typography>

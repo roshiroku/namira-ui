@@ -1,7 +1,6 @@
 import { FC, useState, useRef } from 'react';
 import { AppBar, Toolbar, Button, Menu, Divider, Box, MenuItem } from '@mui/material';
-import SettingsIcon from '@mui/icons-material/Settings';
-import { ArrowDropDown } from '@mui/icons-material';
+import { Settings as SettingsIcon, ArrowDropDown as ArrowDropDownIcon } from '@mui/icons-material';
 import { ImageFormat } from '../../enums/ImageFormat';
 import { useImages } from '../../providers/ImageProvider';
 import Logo from './Logo';
@@ -22,27 +21,24 @@ const Header: FC = () => {
       <AppBar color="inherit" sx={{ height: 'inherit' }}>
         <Toolbar sx={{ height: 'inherit', gap: 2 }}>
           <Logo size={36} />
-          {/* <Row sx={{ maxHeight: '100%', alignItems: 'center', gap: 1 }}>
-            <LogoIcon width={48} height={48} />
-            <Typography variant="h5">
-              NAMIRA
-            </Typography>
-          </Row> */}
           <Box sx={{ flexGrow: 1 }} />
-          <Button ref={saveButtonRef} variant="contained" onClick={() => setSaveMenuOpen(true)} endIcon={<ArrowDropDown />}>
+          <Button ref={saveButtonRef} variant="contained" onClick={() => setSaveMenuOpen(true)} endIcon={<ArrowDropDownIcon />}>
             Save As
           </Button>
           <Menu
             anchorEl={saveButtonRef.current}
             open={saveMenuOpen}
             onClose={() => setSaveMenuOpen(false)}
+            slotProps={{
+              paper: { sx: { minWidth: saveButtonRef.current?.offsetWidth || 0 } }
+            }}
           >
             {Object.entries(ImageFormat).map(([label, value]) => (
               <MenuItem key={value} onClick={() => {
                 setSaveMenuOpen(false);
                 saveImages(value);
               }}>
-                Save as {label}
+                {label}
               </MenuItem>
             ))}
           </Menu>

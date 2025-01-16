@@ -1,9 +1,11 @@
-import { forwardRef, useCallback, ChangeEvent } from 'react';
-import { Box, Typography, Button, BoxProps, useTheme } from '@mui/material';
+import { forwardRef, useCallback, ChangeEvent, useMemo } from 'react';
+import { Box, Typography, Button, BoxProps, useTheme, SvgIcon } from '@mui/material';
+import UploadFileIcon from '@mui/icons-material/UploadFile';
 import useDropZone from '../hooks/useDropZone';
 import { Column } from './common/Flex';
 
 export interface DropZoneProps extends BoxProps {
+  label?: string;
   accept?: string; // Acceptable file types, e.g., 'image/*', 'application/pdf', etc.
   onDrop?: DragEventSource['onDrop'];
   onDragEnter?: DragEventSource['onDragEnter'];
@@ -12,6 +14,7 @@ export interface DropZoneProps extends BoxProps {
 }
 
 const DropZone = forwardRef<typeof Box, DropZoneProps>(({
+  label: _label,
   accept = '*',
   onDrop,
   onDragEnter,
@@ -39,6 +42,10 @@ const DropZone = forwardRef<typeof Box, DropZoneProps>(({
     onChange({ ...ev, target: { ...ev.target, files: dt.files } });
   }, [onChange, filterFiles]);
 
+  const label = useMemo(() => (
+    _label || ('Drag and drop files here' + (onChange ? ', or click to select files' : ''))
+  ), [_label, onChange]);
+
   return (
     <Column
       ref={ref}
@@ -60,10 +67,10 @@ const DropZone = forwardRef<typeof Box, DropZoneProps>(({
       }}
       {...props}
     >
-      <Typography variant="body1">
-        Drag and drop files here
-        {onChange ? ', or click to select files' : ''}
-      </Typography>
+      <SvgIcon fontSize="large" color={isDragging ? 'primary' : 'action'} sx={{ fontSize: '6rem' }}>
+        <UploadFileIcon />
+      </SvgIcon>
+      <Typography variant="body1" sx={{ mt: 1 }}>{label}</Typography>
       {onChange && (
         <label>
           <Button variant="outlined" component="span" color="primary">
