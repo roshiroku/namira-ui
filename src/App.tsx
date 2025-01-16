@@ -5,6 +5,7 @@ import ThemeProvider from './providers/ThemeProvider';
 import ImageProvider from './providers/ImageProvider';
 import { Column } from './components/common/Flex';
 import Header from './components/layout/Header';
+import Footer from './components/layout/Footer';
 import ImageGrid from './components/ImageGrid';
 import ImageUpload from './components/ImageUpload';
 
@@ -20,6 +21,7 @@ const App: FC = () => {
               <ImageGrid />
               <ImageUpload />
             </Box>
+            <Footer />
           </Column>
         </ImageProvider>
       </ThemeProvider>
