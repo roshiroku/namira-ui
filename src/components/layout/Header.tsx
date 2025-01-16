@@ -1,8 +1,10 @@
 import { FC, useState, useRef } from 'react';
-import { AppBar, Toolbar, Typography, Button, Menu, Divider, Box, MenuItem } from '@mui/material';
+import { AppBar, Toolbar, Button, Menu, Divider, Box, MenuItem } from '@mui/material';
 import SettingsIcon from '@mui/icons-material/Settings';
+import { ArrowDropDown } from '@mui/icons-material';
 import { ImageFormat } from '../../enums/ImageFormat';
 import { useImages } from '../../providers/ImageProvider';
+import Logo from './Logo';
 import SettingsMenu from './SettingsMenu';
 
 const Header: FC = () => {
@@ -19,10 +21,15 @@ const Header: FC = () => {
     <Box sx={{ height: 72 }}>
       <AppBar color="inherit" sx={{ height: 'inherit' }}>
         <Toolbar sx={{ height: 'inherit', gap: 2 }}>
-          <Typography variant="h6" sx={{ flexGrow: 1 }}>
-            NAMIRA
-          </Typography>
-          <Button ref={saveButtonRef} variant="contained" onClick={() => setSaveMenuOpen(true)}>
+          <Logo size={36} />
+          {/* <Row sx={{ maxHeight: '100%', alignItems: 'center', gap: 1 }}>
+            <LogoIcon width={48} height={48} />
+            <Typography variant="h5">
+              NAMIRA
+            </Typography>
+          </Row> */}
+          <Box sx={{ flexGrow: 1 }} />
+          <Button ref={saveButtonRef} variant="contained" onClick={() => setSaveMenuOpen(true)} endIcon={<ArrowDropDown />}>
             Save As
           </Button>
           <Menu
@@ -35,7 +42,7 @@ const Header: FC = () => {
                 setSaveMenuOpen(false);
                 saveImages(value);
               }}>
-                Save As {label}
+                Save as {label}
               </MenuItem>
             ))}
           </Menu>
