@@ -1,5 +1,7 @@
 import { createContext, useContext, useState, useEffect, FC, PropsWithChildren, Dispatch, SetStateAction } from 'react';
 
+const SETTINGS_KEY = import.meta.env.VITE_STORAGE_KEY + '-settings';
+
 interface SettingsContextProps {
   settings: Settings;
   setSettings: Dispatch<SetStateAction<Settings>>;
@@ -19,12 +21,12 @@ const useSettings = (): SettingsContextProps => {
 
 const SettingsProvider: FC<PropsWithChildren> = ({ children }) => {
   const [settings, setSettings] = useState<Settings>(() => {
-    const settings = localStorage.getItem('settings');
+    const settings = localStorage.getItem(SETTINGS_KEY);
     return settings ? JSON.parse(settings) : defaultSettings;
   });
 
   useEffect(() => {
-    localStorage.setItem('settings', JSON.stringify(settings));
+    localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings));
   }, [settings]);
 
   return (
