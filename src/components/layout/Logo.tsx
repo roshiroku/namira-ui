@@ -10,7 +10,7 @@ const Logo: FC<{
 }> = ({ size = 32, color = 'currentcolor', slotProps }) => {
   const { sx, ...typography }: TypographyProps = { ...slotProps?.typography, variant: 'h6' };
   return (
-    <Row sx={{ display: 'inline-flex', alignItems: 'flex-end', letterSpacing: -1.5 }}>
+    <Row sx={{ display: 'inline-flex', alignItems: 'center', letterSpacing: -1.5, gap: 0.5 }}>
       <LogoIcon width={size} fill={color} style={{ flexShrink: 0 }} />
       <Typography
         {...typography}
@@ -18,10 +18,10 @@ const Logo: FC<{
           lineHeight: 1,
           fontWeight: 400,
           fontSize: size / 1.5,
-          mb: -0.25, ...sx
+          ...sx
         }}
       >
-        AMIRA
+        NAMIRA
       </Typography>
     </Row>
   );
