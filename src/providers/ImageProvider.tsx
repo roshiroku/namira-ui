@@ -70,7 +70,7 @@ const ImageProvider: FC<PropsWithChildren> = ({ children }) => {
 
       let { quality } = settings;
 
-      if (format === 'image/webp' || format === 'image/jpeg') {
+      if (['image/jpg', 'image/jpeg', 'image/webp'].includes(format)) {
         if (quality < 0 || quality > 1) {
           quality = await detectQuality(image, format);
         }

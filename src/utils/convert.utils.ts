@@ -30,7 +30,7 @@ export const convertImage = (image: ImageInput, options: ConversionOptions): Pro
 
       const { format = ImageFormat.PNG, quality = 1.0 } = options;
       try {
-        const dataUrl = canvas.toDataURL(format, quality);
+        const dataUrl = canvas.toDataURL(format === ImageFormat.JPG ? ImageFormat.JPEG : format, quality);
         const convertedFile: ImageFile = {
           name: getImageName(image, format),
           type: format,
