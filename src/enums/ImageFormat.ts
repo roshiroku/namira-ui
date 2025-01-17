@@ -1,5 +1,6 @@
 export enum ImageFormat {
-  PNG = 'image/png',
+  JPG = 'image/jpg',
   JPEG = 'image/jpeg',
+  PNG = 'image/png',
   WEBP = 'image/webp',
 }
