@@ -5,8 +5,8 @@ Namira is a simple web interface designed for quick and secure image conversion.
 ## Features
 
 - **Supported Formats:**
-  - Input: JPG/JPEG, PNG, WEBP, SVG
-  - Output: JPG/JPEG, PNG, WEBP
+  - Input: JPG/JPEG, PNG, WEBP, SVG, AVIF, BMP
+  - Output: JPG/JPEG, PNG, WEBP, BMP
 - **Quality Settings:**
   - Automatic quality detection
   - Manual quality adjustment

@@ -65,10 +65,9 @@ const ImageProvider: FC<PropsWithChildren> = ({ children }) => {
     for (let i = 0; i < images.length; i++) {
       const image = images[i];
       const progress = Math.round(((i + 1) / images.length) * 100);
-
       let { quality } = settings;
 
-      if (format !== 'image/png') {
+      if (['image/jpg', 'image/jpeg', 'image/webp'].includes(format)) {
         if (quality < 0 || quality > 1) {
           setProgressDialog({ open: true, message: `Detecting quality for ${image.name} (${i + 1}/${images.length})`, progress });
           quality = await detectQuality(image, format);
