@@ -4,6 +4,8 @@ import InfoIcon from '@mui/icons-material/InfoOutlined';
 import { useSettings } from '../../providers/SettingsProvider';
 import { Column, Row } from '../common/Flex';
 
+const labelStyle = { display: 'flex', alignItems: 'center', gap: 4, cursor: 'pointer' };
+
 const SettingsMenu: FC<DialogProps> = ({ open, onClose }) => {
   const { settings, setSettings } = useSettings();
   const theme = useTheme();
@@ -31,7 +33,7 @@ const SettingsMenu: FC<DialogProps> = ({ open, onClose }) => {
       <DialogContent>
         <Column sx={{ gap: 1 }}>
           <Row sx={{ justifyContent: 'space-between', alignItems: 'center', mr: -1.333 }}>
-            <label htmlFor="zipDownloadCheckbox" style={{ display: 'flex', alignItems: 'center', gap: 4, cursor: 'pointer' }}>
+            <label htmlFor="zipDownloadCheckbox" style={labelStyle}>
               Download Zip
               <Tooltip title="Enable this to download converted images as a single ZIP file">
                 <InfoIcon fontSize="small" color="action" />
@@ -45,9 +47,9 @@ const SettingsMenu: FC<DialogProps> = ({ open, onClose }) => {
           </Row>
 
           <Row sx={{ justifyContent: 'space-between', alignItems: 'center', mr: -1.333 }}>
-            <label htmlFor="autoOptimizeCheckbox" style={{ display: 'flex', alignItems: 'center', gap: 4, cursor: 'pointer' }}>
+            <label htmlFor="autoOptimizeCheckbox" style={labelStyle}>
               Detect Quality
-              <Tooltip title="Automatically detect the best quality to minimize file size">
+              <Tooltip title="Automatically detect the best quality to minimize file size (JPG, JPEG, or WEBP)">
                 <InfoIcon fontSize="small" color="action" />
               </Tooltip>
             </label>
@@ -59,18 +61,27 @@ const SettingsMenu: FC<DialogProps> = ({ open, onClose }) => {
           </Row>
 
           {settings.quality !== -1 && (
-            <TextField
-              label="Quality"
-              type="number"
-              value={settings.quality}
-              onChange={handleQualityChange}
-              slotProps={{ htmlInput: { step: 0.05, min: 0, max: 1 } }}
-              fullWidth
-            />
+            <Row sx={{ justifyContent: 'space-between', alignItems: 'center' }}>
+              <label htmlFor="qualityInput" style={labelStyle}>
+                Quality
+                <Tooltip title="Manually set the quality for image conversions (JPG, JPEG, or WEBP)">
+                  <InfoIcon fontSize="small" color="action" />
+                </Tooltip>
+              </label>
+              <TextField
+                id="qualityInput"
+                type="number"
+                value={settings.quality}
+                onChange={handleQualityChange}
+                slotProps={{ htmlInput: { step: 0.05, min: 0, max: 1 } }}
+                size="small"
+                sx={{ width: 100 }}
+              />
+            </Row>
           )}
 
           <Row sx={{ justifyContent: 'space-between', alignItems: 'center', mr: -1.5 }}>
-            <label htmlFor="darkModeSwitch" style={{ cursor: 'pointer' }}>
+            <label htmlFor="darkModeSwitch" style={labelStyle}>
               Dark Mode
             </label>
             <Switch

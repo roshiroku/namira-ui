@@ -7,7 +7,7 @@ interface SettingsContextProps {
   setSettings: Dispatch<SetStateAction<Settings>>;
 }
 
-const defaultSettings: Settings = { theme: 'system', zipDownload: true, quality: -1 };
+const defaultSettings: Settings = { zipDownload: true, quality: -1, theme: 'system' };
 
 const SettingsContext = createContext<SettingsContextProps | null>(null);
 
@@ -22,7 +22,7 @@ const useSettings = (): SettingsContextProps => {
 const SettingsProvider: FC<PropsWithChildren> = ({ children }) => {
   const [settings, setSettings] = useState<Settings>(() => {
     const settings = localStorage.getItem(SETTINGS_KEY);
-    return settings ? JSON.parse(settings) : defaultSettings;
+    return { ...defaultSettings, ...(settings ? JSON.parse(settings) : null) };
   });
 
   useEffect(() => {
