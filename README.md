@@ -39,7 +39,7 @@ To set up Namira locally:
 
 1. Clone the repository:
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/roshiroku/namira.git
    cd namira
    ```
 2. Install dependencies:
