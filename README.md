@@ -1,50 +1,78 @@
-# React + TypeScript + Vite
+# Namira
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Namira is a simple web interface designed for quick and secure image conversion. With Namira, you can easily convert images between popular formats without uploading your files to a server, ensuring full transparency and privacy.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Supported Formats:**
+  - Input: JPG/JPEG, PNG, WEBP, SVG
+  - Output: JPEG, PNG, WEBP
+- **Quality Settings:**
+  - Automatic quality detection
+  - Manual quality adjustment
+- **Batch Processing:**
+  - Download converted files individually or as a ZIP archive
+- **Local Storage:**
+  - Saves app settings locally for repeat use
+- **Privacy-Focused:**
+  - Fully client-side processing (no server upload required)
 
-## Expanding the ESLint configuration
+## How to Use
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+1. **Add Images:**
+   - Drop files into the app window or click the file picker on the initial screen.
+2. **Convert Files:**
+   - Use the "Save As" button at the top to choose the desired output format and start the conversion process.
+3. **Manage Files:**
+   - Add more files by dropping them into the app window again.
+   - Clear all files using the "Clear" button at the top.
+4. **Adjust Settings:**
+   - Access the settings menu by clicking the cog-wheel icon at the top to customize quality and other preferences.
 
-- Configure the top-level `parserOptions` property like this:
+## Deployment
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+Namira can be viewed directly on [GitHub Pages](https://roshiroku.github.io/namira/) or deployed locally for customization.
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+### Running Locally
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+To set up Namira locally:
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+1. Clone the repository:
+   ```bash
+   git clone <repository-url>
+   cd namira
+   ```
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+3. Start the development server:
+   ```bash
+   npm run dev
+   ```
+4. Build the project for production:
+   ```bash
+   npm run build
+   ```
+5. Preview the production build:
+   ```bash
+   npm run preview
+   ```
+
+## Tech Stack
+
+Namira is built using the following technologies:
+
+- **React** for building the user interface
+- **Material-UI** for styling and components
+- **JSZip** for ZIP file generation
+- **Vite** as the build tool
+- **TypeScript** for type-safe development
+
+## Contributing
+
+Contributions are welcome! Feel free to submit issues or pull requests to improve Namira.
+
+---
+
+**Try Namira:** [GitHub Pages](https://roshiroku.github.io/namira/)
