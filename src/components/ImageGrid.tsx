@@ -2,9 +2,10 @@ import { useCallback, useMemo } from 'react';
 import { Button, Fade, Grid2 as Grid } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { TransitionGroup } from 'react-transition-group';
+import ImageModel from '../models/ImageModel';
+import useMap from '../hooks/useMap';
 import { useImages } from '../providers/ImageProvider';
 import ImageCard from './ImageCard';
-import useMap from '../hooks/useMap';
 
 const ImageGrid = () => {
   const { images, setImages } = useImages();
@@ -12,7 +13,7 @@ const ImageGrid = () => {
 
   const imageEntries = useMemo(() => Array.from(imageMap.entries()), [imageMap]);
 
-  const handleRemove = useCallback((image: ImageFile) => {
+  const handleRemove = useCallback((image: ImageModel) => {
     setImages((prev) => prev.filter((other) => other !== image));
   }, []);
 

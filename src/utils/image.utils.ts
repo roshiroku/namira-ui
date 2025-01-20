@@ -1,63 +1,13 @@
-import { ImageFormat } from '../enums/ImageFormat';
+import ImageType from '../enums/ImageType';
 
-export const { canvas, ctx } = (() => {
-  const canvas = document.createElement('canvas');
-  const ctx = canvas.getContext('2d', { willReadFrequently: true });
-
-  if (!ctx) {
-    throw new Error('Failed to get canvas context.');
-  }
-
-  return { canvas, ctx };
-})();
-
-export const getImageName = (image: ImageInput, format?: ImageFormat): string => {
-  let name = 'image';
-
-  if (typeof image === 'string') {
-    const segments = image.split('/');
-    name = segments.pop()?.split('.').slice(0, -1).join('.') || 'image';
-  } else if (image instanceof File || 'name' in image) {
-    name = image.name.split('.').slice(0, -1).join('.') || 'image';
-  }
-
-  const ext = format?.split('/')[1] || 'png';
-  return `${name}.${ext}`;
-};
-
-export const getImageData = async (data: string | ImageData): Promise<ImageData> => {
-  if (typeof data !== 'string') {
-    return data;
-  }
-
-  return new Promise((resolve, reject) => {
-    const img = new Image();
-    img.src = data;
-    img.onload = () => {
-      canvas.width = img.width;
-      canvas.height = img.height;
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.drawImage(img, 0, 0);
-      resolve(ctx.getImageData(0, 0, canvas.width, canvas.height));
-    };
-    img.onerror = () => reject(new Error('Failed to load image.'));
-  });
-};
-
-export const compareImages = async (data1: string | ImageData, data2: string | ImageData): Promise<number> => {
+export const compareImages = async (data1: ImageData, data2: ImageData): Promise<number> => {
   if (!data1 || !data2) {
     throw new Error('Both data inputs are required for comparison.');
   }
 
   try {
-    const [imgData1, imgData2] = await Promise.all([getImageData(data1), getImageData(data2)]);
-
-    if (imgData1.width !== imgData2.width || imgData1.height !== imgData2.height) {
-      throw new Error('Images must have the same dimensions for comparison.');
-    }
-
-    const data1Pixels = imgData1.data;
-    const data2Pixels = imgData2.data;
+    const data1Pixels = data1.data;
+    const data2Pixels = data2.data;
 
     // Calculate the pixel difference
     let diff = 0;
@@ -75,4 +25,26 @@ export const compareImages = async (data1: string | ImageData, data2: string | I
     console.error('Error comparing images:', error);
     throw error;
   }
+};
+
+export const inferImageType = (src: string): string => {
+  const extension = src.split('.').pop()?.toLowerCase();
+
+  if (extension) {
+    if (extension === 'jpg') {
+      return 'image/jpeg';
+    }
+    return `image/${extension}`;
+  } else if (src.startsWith('data:')) {
+    return src.substring(5, src.indexOf(';')) || 'unknown';
+  } else {
+    return 'unknown';
+  }
+};
+
+export const determineQuality = (type: ImageType, quality: number): number => {
+  if (![ImageType.JPG, ImageType.JPEG, ImageType.WEBP].includes(type)) {
+    return 1; // Enforce quality 1 for unsupported types
+  }
+  return quality;
 };

@@ -1,7 +1,7 @@
 import { FC, useState, useRef } from 'react';
 import { AppBar, Toolbar, Button, Menu, Divider, Box, MenuItem } from '@mui/material';
 import { Settings as SettingsIcon, ArrowDropDown as ArrowDropDownIcon } from '@mui/icons-material';
-import { ImageFormat } from '../../enums/ImageFormat';
+import ImageType from '../../enums/ImageType';
 import { useImages } from '../../providers/ImageProvider';
 import Logo from './Logo';
 import SettingsMenu from './SettingsMenu';
@@ -33,7 +33,7 @@ const Header: FC = () => {
               paper: { sx: { minWidth: saveButtonRef.current?.offsetWidth || 0 } }
             }}
           >
-            {Object.entries(ImageFormat).map(([label, value]) => (
+            {Object.entries(ImageType).map(([label, value]) => (
               <MenuItem key={value} onClick={() => {
                 setSaveMenuOpen(false);
                 saveImages(value);

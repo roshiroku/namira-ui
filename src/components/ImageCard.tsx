@@ -1,19 +1,20 @@
 import { FC, useMemo } from 'react';
 import { Box, CardMedia, Typography } from '@mui/material';
+import { ImageModelProps } from '../models/ImageModel';
 
 const MAX_NAME_LENGTH = 64;
 
-const ImageCard: FC<ImageFile> = ({ name, src }) => {
+const ImageCard: FC<ImageModelProps> = ({ filename, src }) => {
   const truncateName = useMemo(() => (
-    name.length > MAX_NAME_LENGTH ? `${name.substring(0, MAX_NAME_LENGTH - 3)}...` : name
-  ), [name]);
+    filename.length > MAX_NAME_LENGTH ? `${filename.substring(0, MAX_NAME_LENGTH - 3)}...` : filename
+  ), [filename]);
 
   return (
     <Box>
       <CardMedia
         component="img"
         src={src}
-        alt={name}
+        alt={filename}
         sx={{ aspectRatio: 1, objectFit: 'contain', objectPosition: 'bottom' }}
         draggable={false}
       />

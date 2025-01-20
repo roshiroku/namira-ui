@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTheme } from '@mui/material';
+import ImageModel from '../models/ImageModel';
 import useDropZone from '../hooks/useDropZone';
 import { useImages } from '../providers/ImageProvider';
 import DropZone from './DropZone';
@@ -10,21 +11,7 @@ const ImageUpload = () => {
   const { images, setImages } = useImages();
   const { isDragging } = useDropZone({ element: window, accept: 'image/*' });
   const showDropZone = useMemo(() => !images.length || isDragging, [images, isDragging]);
-
-  const readImages = useCallback(async () => (
-    Promise.all(files.map((file) => (
-      new Promise<ImageFile>((resolve) => {
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = () => resolve({
-          name: file.name,
-          type: file.type,
-          size: file.size,
-          src: `${reader.result}`,
-        });
-      })
-    )))
-  ), [files]);
+  const readImages = useCallback(() => Promise.all(files.map(ImageModel.create)), [files]);
 
   useEffect(() => {
     if (files.length) {
