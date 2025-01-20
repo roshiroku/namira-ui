@@ -3,7 +3,6 @@ import { compareImages, inferImageType } from "../utils/image.utils";
 
 interface QualityConfig {
   maxDifference?: number;
-  step?: number;
   initialQuality?: number;
 }
 
@@ -101,25 +100,26 @@ class ImageModel {
   }
 
   async convertAutoQuality(type: ImageType, config: QualityConfig = {}): Promise<ImageModel> {
-    const { maxDifference = 0.005, step = 0.01, initialQuality = 1 } = config;
+    const { maxDifference = 0.005, initialQuality = 1 } = config;
     const imageData = this.getImageData();
-    let quality = initialQuality;
-    let image: ImageModel = this;
+    let low = 0;
+    let high = initialQuality;
+    let bestImage: ImageModel = this;
 
-    while (quality >= 0) {
+    while (high - low > 0.001) {
+      const quality = (low + high) / 2;
       const convertedImage = await this.convert(type, quality);
       const difference = await compareImages(imageData, convertedImage.getImageData());
 
       if (difference <= maxDifference) {
-        image = convertedImage;
-        quality = Math.round((quality - step) * 10_000) / 10_000; // Continue to check lower qualities
+        bestImage = convertedImage;
+        high = quality; // Try lower qualities
       } else {
-        console.log(this.name, quality + step);
-        break;
+        low = quality; // Increase quality
       }
     }
 
-    return image;
+    return bestImage;
   }
 }
 
