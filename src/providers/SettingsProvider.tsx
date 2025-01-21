@@ -7,11 +7,16 @@ interface SettingsContextProps {
   setSettings: Dispatch<SetStateAction<Settings>>;
 }
 
-const defaultSettings: Settings = { zipDownload: true, quality: -1, theme: 'system' };
+const defaultSettings: Settings = {
+  zipDownload: true,
+  quality: -1,
+  theme: 'system',
+  maxFileSize: -1
+};
 
 const SettingsContext = createContext<SettingsContextProps | null>(null);
 
-const useSettings = (): SettingsContextProps => {
+export const useSettings = (): SettingsContextProps => {
   const context = useContext(SettingsContext);
   if (!context) {
     throw new Error('useSettings must be used within a SettingsProvider');
@@ -36,5 +41,4 @@ const SettingsProvider: FC<PropsWithChildren> = ({ children }) => {
   );
 };
 
-export { useSettings };
 export default SettingsProvider;

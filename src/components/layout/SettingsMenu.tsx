@@ -23,6 +23,16 @@ const SettingsMenu: FC<DialogProps> = ({ open, onClose }) => {
     setSettings({ ...settings, quality: parseFloat(ev.target.value) });
   };
 
+  const handleLimitFileSizeChange = (ev: ChangeEvent<HTMLInputElement>) => {
+    const limitFileSize = ev.target.checked;
+    setSettings({ ...settings, maxFileSize: limitFileSize ? 500 * 1024 : -1 }); // Default to 500KB or disable
+  };
+
+  const handleMaxFileSizeChange = (ev: ChangeEvent<HTMLInputElement>) => {
+    const value = parseInt(ev.target.value, 10);
+    setSettings({ ...settings, maxFileSize: isNaN(value) || value < 1 ? -1 : value * 1024 }); // Convert KB to bytes or disable
+  };
+
   const handleThemeChange = (ev: ChangeEvent<HTMLInputElement>) => {
     setSettings({ ...settings, theme: ev.target.checked ? 'dark' : 'light' });
   };
@@ -74,6 +84,40 @@ const SettingsMenu: FC<DialogProps> = ({ open, onClose }) => {
                 value={settings.quality}
                 onChange={handleQualityChange}
                 slotProps={{ htmlInput: { step: 0.05, min: 0, max: 1 } }}
+                size="small"
+                sx={{ width: 100 }}
+              />
+            </Row>
+          )}
+
+          <Row sx={{ justifyContent: 'space-between', alignItems: 'center', mr: -1.333 }}>
+            <label htmlFor="limitFileSizeCheckbox" style={labelStyle}>
+              Limit File Size
+              <Tooltip title="Enable this to set a maximum file size for image conversions (JPG, JPEG, or WEBP)">
+                <InfoIcon fontSize="small" color="action" />
+              </Tooltip>
+            </label>
+            <Checkbox
+              id="limitFileSizeCheckbox"
+              checked={settings.maxFileSize !== -1}
+              onChange={handleLimitFileSizeChange}
+            />
+          </Row>
+
+          {settings.maxFileSize !== -1 && (
+            <Row sx={{ justifyContent: 'space-between', alignItems: 'center' }}>
+              <label htmlFor="maxFileSizeInput" style={labelStyle}>
+                Max File Size (KB)
+                <Tooltip title="Set the maximum file size in kilobytes for image conversions">
+                  <InfoIcon fontSize="small" color="action" />
+                </Tooltip>
+              </label>
+              <TextField
+                id="maxFileSizeInput"
+                type="number"
+                value={isNaN(settings.maxFileSize) ? '' : Math.round(settings.maxFileSize / 1024)} // Convert bytes to KB
+                onChange={handleMaxFileSizeChange}
+                slotProps={{ htmlInput: { min: 1 } }}
                 size="small"
                 sx={{ width: 100 }}
               />
