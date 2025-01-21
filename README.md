@@ -16,6 +16,8 @@ Namira is a simple web interface designed for quick and secure image conversion.
   - Saves app settings locally for repeat use
 - **Privacy-Focused:**
   - Fully client-side processing (no server upload required)
+- **Limit File Size:**
+  - Customize compression to control the size and quality of exported images
 
 ## How to Use
 
@@ -25,6 +27,7 @@ Namira is a simple web interface designed for quick and secure image conversion.
    - Use the "Save As" button at the top to choose the desired output format and start the conversion process.
 3. **Manage Files:**
    - Add more files by dropping them into the app window again.
+   - Remove individual images by clicking the button at the top right of each image.
    - Clear all files using the "Clear" button at the top.
 4. **Adjust Settings:**
    - Access the settings menu by clicking the cog-wheel icon at the top to customize quality and other preferences.
