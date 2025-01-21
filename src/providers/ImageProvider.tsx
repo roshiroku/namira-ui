@@ -5,7 +5,6 @@ import ImageModel from '../models/ImageModel';
 import useDownload from '../hooks/useDownload';
 import { useSettings } from './SettingsProvider';
 import { Column } from '../components/common/Flex';
-import { determineQuality } from '../utils/image.utils';
 
 interface ImageContextProps {
   images: ImageModel[];
@@ -19,7 +18,7 @@ const ImageContext = createContext<ImageContextProps>({
   saveImages: () => { },
 });
 
-const useImages = () => useContext(ImageContext);
+export const useImages = () => useContext(ImageContext);
 
 const ImageProvider: FC<PropsWithChildren> = ({ children }) => {
   const { settings } = useSettings();
@@ -28,11 +27,11 @@ const ImageProvider: FC<PropsWithChildren> = ({ children }) => {
   const [images, setImages] = useState<ImageModel[]>([]);
   const [progressDialog, setProgressDialog] = useState({ open: false, message: 'Processing...', progress: 0 });
 
-  const updateProgress = useCallback((index: number) => {
+  const updateProgress = useCallback((index: number, message?: string) => {
     const progress = Math.round(((index + 1) / images.length) * 100);
     setProgressDialog({
       open: true,
-      message: `Converting ${images[index].name} (${index + 1}/${images.length})`,
+      message: message || `Converting ${images[index].name} (${index + 1}/${images.length})`,
       progress,
     });
   }, [images]);
@@ -43,10 +42,26 @@ const ImageProvider: FC<PropsWithChildren> = ({ children }) => {
     for (let i = 0; i < images.length; i++) {
       updateProgress(i);
 
-      const quality = determineQuality(type, settings.quality);
-      const image = quality < 0 || quality > 1
-        ? await images[i].convertAutoQuality(type)
-        : await images[i].convert(type, quality);
+      const customQuality = [ImageType.JPG, ImageType.JPEG, ImageType.WEBP].includes(type);
+      let image: ImageModel;
+      let quality = customQuality ? settings.quality : 1;
+      let fileSize = customQuality ? settings.maxFileSize : -1;
+
+      if (quality < 0 || quality > 1) {
+        const res = await images[i].convertAutoQuality(type);
+        quality = res.quality;
+        image = res.image;
+      } else {
+        image = await images[i].convert(type, quality);
+      }
+
+      if (fileSize !== -1 && image.size > fileSize) {
+        updateProgress(i, `Compressing ${images[i].name} to meet file size limits...`);
+        const res = await image.compress(fileSize, type, quality);
+        quality = res.quality;
+        image = res.image;
+        updateProgress(i, `Compressed ${images[i].name} successfully.`);
+      }
 
       files.push({ name: image.filename, url: image.src });
     }
@@ -78,5 +93,4 @@ const ImageProvider: FC<PropsWithChildren> = ({ children }) => {
   );
 };
 
-export { useImages };
 export default ImageProvider;

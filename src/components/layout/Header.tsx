@@ -33,7 +33,7 @@ const Header: FC = () => {
               paper: { sx: { minWidth: saveButtonRef.current?.offsetWidth || 0 } }
             }}
           >
-            {Object.entries(ImageType).map(([label, value]) => (
+            {Object.entries(ImageType).filter(([_, value]) => !!value).map(([label, value]) => (
               <MenuItem key={value} onClick={() => {
                 setSaveMenuOpen(false);
                 saveImages(value);

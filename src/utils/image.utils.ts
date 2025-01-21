@@ -27,24 +27,19 @@ export const compareImages = async (data1: ImageData, data2: ImageData): Promise
   }
 };
 
-export const inferImageType = (src: string): string => {
+export const estimateFileSize = (src: string): number => src.length * (3 / 4);
+
+export const inferImageType = (src: string): ImageType => {
   const extension = src.split('.').pop()?.toLowerCase();
 
   if (extension) {
     if (extension === 'jpg') {
-      return 'image/jpeg';
+      return ImageType.JPEG;
     }
-    return `image/${extension}`;
+    return `image/${extension}` as ImageType;
   } else if (src.startsWith('data:')) {
-    return src.substring(5, src.indexOf(';')) || 'unknown';
+    return src.substring(5, src.indexOf(';')) as ImageType;
   } else {
-    return 'unknown';
+    return ImageType.None;
   }
-};
-
-export const determineQuality = (type: ImageType, quality: number): number => {
-  if (![ImageType.JPG, ImageType.JPEG, ImageType.WEBP].includes(type)) {
-    return 1; // Enforce quality 1 for unsupported types
-  }
-  return quality;
 };

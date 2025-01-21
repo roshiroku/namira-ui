@@ -1,5 +1,5 @@
 import ImageType from "../enums/ImageType";
-import { compareImages, inferImageType } from "../utils/image.utils";
+import { compareImages, estimateFileSize, inferImageType } from "../utils/image.utils";
 
 interface QualityConfig {
   maxDifference?: number;
@@ -8,7 +8,7 @@ interface QualityConfig {
 
 export type ImageModelProps = {
   filename: string;
-  type: string;
+  type: ImageType;
   size: number;
   src: string;
   img: HTMLImageElement;
@@ -16,7 +16,7 @@ export type ImageModelProps = {
 
 class ImageModel {
   filename: string;
-  type: string;
+  type: ImageType;
   size: number;
   src: string;
   img: HTMLImageElement;
@@ -39,7 +39,7 @@ class ImageModel {
         reader.readAsDataURL(input);
 
         data.filename = input.name;
-        data.type = input.type;
+        data.type = input.type as ImageType;
         data.size = input.size;
       } else {
         data.src = img.src = input;
@@ -76,9 +76,9 @@ class ImageModel {
     this.ctx.drawImage(this.img, 0, 0);
   }
 
-  getDataURL(type: ImageType = ImageType.PNG, quality?: number): string {
+  getDataURL(type: ImageType = this.type, quality?: number): string {
     const format = type === ImageType.JPG ? ImageType.JPEG : type;
-    return this.canvas.toDataURL(format, quality);
+    return this.canvas.toDataURL(`${format}`, quality);
   }
 
   getImageData(): ImageData {
@@ -91,20 +91,23 @@ class ImageModel {
       const img = new Image();
 
       img.onload = () => {
-        const filename = `${this.name}.${type.split('/').pop()}`;
-        resolve(new ImageModel({ filename, type, size: 0, src, img }));
+        const filename = `${this.name}.${`${type}`.split('/').pop()}`;
+        resolve(new ImageModel({ filename, type, size: estimateFileSize(src), src, img }));
       };
 
       img.src = src;
     });
   }
 
-  async convertAutoQuality(type: ImageType, config: QualityConfig = {}): Promise<ImageModel> {
+  async convertAutoQuality(
+    type: ImageType,
+    config: QualityConfig = {}
+  ): Promise<{ image: ImageModel; quality: number; }> {
     const { maxDifference = 0.005, initialQuality = 1 } = config;
     const imageData = this.getImageData();
     let low = 0;
     let high = initialQuality;
-    let bestImage: ImageModel = this;
+    let image: ImageModel = this;
 
     while (high - low > 0.001) {
       const quality = (low + high) / 2;
@@ -112,14 +115,38 @@ class ImageModel {
       const difference = await compareImages(imageData, convertedImage.getImageData());
 
       if (difference <= maxDifference) {
-        bestImage = convertedImage;
+        image = convertedImage;
         high = quality; // Try lower qualities
       } else {
         low = quality; // Increase quality
       }
     }
 
-    return bestImage;
+    return { image, quality: high };
+  }
+
+  async compress(
+    maxFileSize: number,
+    type: ImageType,
+    initialQuality: number = 1
+  ): Promise<{ image: ImageModel; quality: number; }> {
+    let low = 0;
+    let high = initialQuality;
+    let image: ImageModel = this;
+
+    while (high - low > 0.001) {
+      const quality = (low + high) / 2;
+      const convertedImage = await this.convert(type, quality);
+
+      if (convertedImage.size <= maxFileSize) {
+        image = convertedImage;
+        low = quality; // Increase quality to fit within the file size constraint
+      } else {
+        high = quality; // Try lower qualities to further reduce file size
+      }
+    }
+
+    return { image, quality: low };
   }
 }
 

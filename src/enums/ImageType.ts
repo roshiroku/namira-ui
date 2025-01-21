@@ -1,4 +1,5 @@
 enum ImageType {
+  None = '',
   JPG = 'image/jpg',
   JPEG = 'image/jpeg',
   PNG = 'image/png',
