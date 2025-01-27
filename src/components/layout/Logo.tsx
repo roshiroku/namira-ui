@@ -21,7 +21,7 @@ const Logo: FC<{
           ...sx
         }}
       >
-        NAMIRA
+        NAMIRA UI
       </Typography>
     </Row>
   );

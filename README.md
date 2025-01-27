@@ -1,6 +1,6 @@
-# Namira
+# Namira UI
 
-Namira is a simple web interface designed for quick and secure image conversion. With Namira, you can easily convert images between popular formats without uploading your files to a server, ensuring full transparency and privacy.
+Namira UI is a simple web interface designed for quick and secure image conversion. With Namira, you can easily convert images between popular formats without uploading your files to a server, ensuring full transparency and privacy.
 
 ## Features
 
@@ -34,16 +34,16 @@ Namira is a simple web interface designed for quick and secure image conversion.
 
 ## Deployment
 
-Namira can be viewed directly on [GitHub Pages](https://roshiroku.github.io/namira/) or deployed locally for customization.
+Namira UI can be viewed directly on [GitHub Pages](https://roshiroku.github.io/namira-ui/) or deployed locally for customization.
 
 ### Running Locally
 
-To set up Namira locally:
+To set up Namira UI locally:
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/roshiroku/namira.git
-   cd namira
+   git clone https://github.com/roshiroku/namira-ui.git
+   cd namira-ui
    ```
 2. Install dependencies:
    ```bash
@@ -64,7 +64,7 @@ To set up Namira locally:
 
 ## Tech Stack
 
-Namira is built using the following technologies:
+Namira UI is built using the following technologies:
 
 - **React** for building the user interface
 - **Material-UI** for styling and components
@@ -74,8 +74,8 @@ Namira is built using the following technologies:
 
 ## Contributing
 
-Contributions are welcome! Feel free to submit issues or pull requests to improve Namira.
+Contributions are welcome! Feel free to submit issues or pull requests to improve Namira UI.
 
 ---
 
-**Try Namira:** [GitHub Pages](https://roshiroku.github.io/namira/)
+**Try Namira UI:** [GitHub Pages](https://roshiroku.github.io/namira-ui/)
