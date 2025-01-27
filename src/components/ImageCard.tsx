@@ -1,6 +1,6 @@
+import { ImageModelProps } from 'namira/ImageModel';
 import { FC, useMemo } from 'react';
 import { Box, CardMedia, Typography } from '@mui/material';
-import { ImageModelProps } from '../models/ImageModel';
 
 const MAX_NAME_LENGTH = 64;
 

@@ -1,7 +1,6 @@
+import { ImageModel, ImageType } from 'namira';
 import { createContext, Dispatch, FC, PropsWithChildren, SetStateAction, useCallback, useContext, useMemo, useState } from 'react';
 import { Dialog, DialogContent, DialogTitle, Typography, LinearProgress } from '@mui/material';
-import ImageType from '../enums/ImageType';
-import ImageModel from '../models/ImageModel';
 import useDownload from '../hooks/useDownload';
 import { useSettings } from './SettingsProvider';
 import { Column } from '../components/common/Flex';
@@ -28,7 +27,7 @@ const ImageProvider: FC<PropsWithChildren> = ({ children }) => {
   const [progressDialog, setProgressDialog] = useState({ open: false, message: 'Processing...', progress: 0 });
 
   const updateProgress = useCallback((index: number, message?: string) => {
-    const progress = Math.round(((index + 1) / images.length) * 100);
+    const progress = Math.round(index / images.length * 100);
     setProgressDialog({
       open: true,
       message: message || `Converting ${images[index].name} (${index + 1}/${images.length})`,
@@ -41,29 +40,8 @@ const ImageProvider: FC<PropsWithChildren> = ({ children }) => {
 
     for (let i = 0; i < images.length; i++) {
       updateProgress(i);
-
-      const customQuality = [ImageType.JPG, ImageType.JPEG, ImageType.WEBP].includes(type);
-      let image: ImageModel;
-      let quality = customQuality ? settings.quality : 1;
-      let fileSize = customQuality ? settings.maxFileSize : -1;
-
-      if (quality < 0 || quality > 1) {
-        const res = await images[i].convertAutoQuality(type);
-        quality = res.quality;
-        image = res.image;
-      } else {
-        image = await images[i].convert(type, quality);
-      }
-
-      if (fileSize !== -1 && image.size > fileSize) {
-        updateProgress(i, `Compressing ${images[i].name} to meet file size limits...`);
-        const res = await image.compress(fileSize, type, quality);
-        quality = res.quality;
-        image = res.image;
-        updateProgress(i, `Compressed ${images[i].name} successfully.`);
-      }
-
-      files.push({ name: image.filename, url: image.src });
+      const { filename, src } = await images[i].convert(type, settings);
+      files.push({ name: filename, url: src });
     }
 
     setProgressDialog({ open: false, message: 'Processing complete', progress: 100 });

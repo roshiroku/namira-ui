@@ -1,6 +1,6 @@
+import { ImageModel } from 'namira';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTheme } from '@mui/material';
-import ImageModel from '../models/ImageModel';
 import useDropZone from '../hooks/useDropZone';
 import { useImages } from '../providers/ImageProvider';
 import DropZone from './DropZone';

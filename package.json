@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --force",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview"
@@ -16,6 +16,7 @@
     "@mui/icons-material": "^6.3.1",
     "@mui/material": "^6.3.1",
     "jszip": "^3.10.1",
+    "namira": "github:roshiroku/namira#5dfea3bcaa264c68a6ddf1d58e098a755ddec33b",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-transition-group": "^4.4.5"

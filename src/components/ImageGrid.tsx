@@ -1,8 +1,8 @@
+import { ImageModel } from 'namira';
 import { useCallback, useMemo } from 'react';
 import { Button, Fade, Grid2 as Grid } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { TransitionGroup } from 'react-transition-group';
-import ImageModel from '../models/ImageModel';
 import useMap from '../hooks/useMap';
 import { useImages } from '../providers/ImageProvider';
 import ImageCard from './ImageCard';
