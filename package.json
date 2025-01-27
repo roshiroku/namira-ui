@@ -16,7 +16,7 @@
     "@mui/icons-material": "^6.3.1",
     "@mui/material": "^6.3.1",
     "jszip": "^3.10.1",
-    "namira": "github:roshiroku/namira#5dfea3bcaa264c68a6ddf1d58e098a755ddec33b",
+    "namira": "github:roshiroku/namira#05d01b68451f513f8f7816d967d769f1f746a1db",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-transition-group": "^4.4.5"
